@@ -64,6 +64,7 @@
 		}
 
 		public function click(event:MouseEvent = null):void {
+			if (!this.enabled) return;
 			if (this._callback != null)
 				this._callback();
 		}

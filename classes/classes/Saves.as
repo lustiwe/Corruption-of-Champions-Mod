@@ -272,6 +272,7 @@ public function saveScreen():void
 
 public function saveLoad(e:MouseEvent = null):void
 {
+	getGame().mainMenu.hideMainMenu();
 	mainView.eventTestInput.x = -10207.5;
 	mainView.eventTestInput.y = -1055.1;
 	//Hide the name box in case of backing up from save
@@ -299,7 +300,7 @@ public function saveLoad(e:MouseEvent = null):void
 	addButton(3, "Delete", deleteScreen);
 	addButton(4, "AutoSave: " + (player.autoSave ? "ON" : "OFF"), autosaveToggle);
 	
-	addButton(9, "Back", player.str == 0 ? kGAMECLASS.mainMenu : kGAMECLASS.playerMenu);
+	addButton(9, "Back", player.str == 0 ? kGAMECLASS.mainMenu.mainMenu : kGAMECLASS.playerMenu);
 }
 
 private function saveToFile():void {
@@ -449,6 +450,88 @@ public function loadGame(slot:String):void
 	}
 }
 
+
+//Used for tracking achievements.
+public function savePermObject(isFile:Boolean):void {
+	//Initialize the save file
+	var saveFile:*;
+	var backup:SharedObject;
+	if (isFile)
+	{
+		saveFile = {};
+		
+		saveFile.data = {};
+	}
+	else
+	{
+		saveFile = SharedObject.getLocal("CoC_Main", "/");
+	}
+	
+	saveFile.data.exists = true;
+	saveFile.data.version = ver;
+	
+	var processingError:Boolean = false;
+	var dataError:Error;
+	
+	try {
+		var i:int
+		//flag settings
+		saveFile.data.flags = [];
+		for (i = 0; i < flags.length; i++) {
+			if (flags[i] != 0)
+			{
+				saveFile.data.flags[i] = 0;
+			}			
+		}
+		saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] = flags[kFLAGS.SHOW_SPRITES_FLAG];
+		saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];
+		
+		saveFile.data.flags[kFLAGS.USE_OLD_FONT] = flags[kFLAGS.USE_OLD_FONT];
+		saveFile.data.flags[kFLAGS.TEXT_BACKGROUND_STYLE] = flags[kFLAGS.TEXT_BACKGROUND_STYLE];
+		saveFile.data.flags[kFLAGS.CUSTOM_FONT_SIZE] = flags[kFLAGS.CUSTOM_FONT_SIZE];
+		saveFile.data.flags[kFLAGS.ANIMATE_STATS_BARS] = flags[kFLAGS.ANIMATE_STATS_BARS];
+		saveFile.data.flags[kFLAGS.USE_12_HOURS] = flags[kFLAGS.USE_12_HOURS];
+		saveFile.data.flags[kFLAGS.AUTO_LEVEL] = flags[kFLAGS.AUTO_LEVEL];
+	}
+	catch (error:Error)
+	{
+		processingError = true;
+		dataError = error;
+		//trace(error.message);
+	}
+	//trace("done saving achievements");
+}
+
+public function loadPermObject():void {
+	var permObjectFileName:String = "CoC_Main";
+	var saveFile:* = SharedObject.getLocal(permObjectFileName, "/");
+	//Initialize the save file
+	//var saveFile:Object = loader.data.readObject();
+	if (saveFile.data.exists)
+	{
+		//Load saved flags.
+		if (saveFile.data.flags) {
+			if (saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] != undefined) 
+				flags[kFLAGS.SHOW_SPRITES_FLAG] = saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG];
+			else
+				flags[kFLAGS.SHOW_SPRITES_FLAG] = 2;
+			if (saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] != undefined) flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];			
+			if (saveFile.data.flags[kFLAGS.USE_OLD_FONT] != undefined) flags[kFLAGS.USE_OLD_FONT] = saveFile.data.flags[kFLAGS.USE_OLD_FONT];
+			if (saveFile.data.flags[kFLAGS.TEXT_BACKGROUND_STYLE] != undefined) flags[kFLAGS.TEXT_BACKGROUND_STYLE] = saveFile.data.flags[kFLAGS.TEXT_BACKGROUND_STYLE];
+			if (saveFile.data.flags[kFLAGS.CUSTOM_FONT_SIZE] != undefined) flags[kFLAGS.CUSTOM_FONT_SIZE] = saveFile.data.flags[kFLAGS.CUSTOM_FONT_SIZE];
+			if (saveFile.data.flags[kFLAGS.ANIMATE_STATS_BARS] != undefined)
+				flags[kFLAGS.ANIMATE_STATS_BARS] = saveFile.data.flags[kFLAGS.ANIMATE_STATS_BARS];
+			else
+				flags[kFLAGS.ANIMATE_STATS_BARS] = 1; //Default to ON.
+			if (saveFile.data.flags[kFLAGS.USE_12_HOURS] != undefined) flags[kFLAGS.USE_12_HOURS] = saveFile.data.flags[kFLAGS.USE_12_HOURS];
+			if (saveFile.data.flags[kFLAGS.AUTO_LEVEL] != undefined) flags[kFLAGS.AUTO_LEVEL] = saveFile.data.flags[kFLAGS.AUTO_LEVEL];
+		}
+	}
+	else {
+		flags[kFLAGS.SHOW_SPRITES_FLAG] = 2;
+		flags[kFLAGS.ANIMATE_STATS_BARS] = 1; //Default to ON.
+	}
+}
 
 /*
 
@@ -1790,6 +1873,7 @@ public function loadGameObject(saveData:Object, slot:String = "VOID"):void
 		{
 			game.inputManager.LoadBindsFromObj(saveFile.data.controls);
 		}
+		loadPermObject(); //Now load settings.
 		doNext(playerMenu);
 	}
 }

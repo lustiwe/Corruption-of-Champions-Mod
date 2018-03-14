@@ -8,6 +8,7 @@ package classes
 	import flash.display.GradientType;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	import coc.view.MainView;
@@ -45,6 +46,10 @@ package classes
 		public const textColorArray:Array = [null, null, null, 0xC0C0C0, 0xC0C0C0, null, null, null, null, null];
 		public const mainColorArray:Array = [null, null, null, null, 0xC0C0C0, null, null, null, null, null];
 		public const barAlphaArray:Array = [0.4, 0.4, 0.5, 1, 1, 1, 1, 1, 1, 0.4];
+	
+		public const baseHeight:Number = 26;
+		public const baseWidth:Number = 170;
+		public const gapDiff:Number = 30;
 		
 		public var statsHidden:Boolean = false;
 		public var buttonsTweened:Boolean = false;
@@ -62,6 +67,8 @@ package classes
 		public var bars:Array = [];
 
 		private var universalAlpha:Number = 0.4;
+		
+		private var previousNums:Array = [0, 0, 0];
 		
 		public function MainViewManager() 
 		{
@@ -89,10 +96,7 @@ package classes
 		// REFRESH
 		//------------
 		public function refreshStats():void {
-			var baseHeight:Number = 26;
-			var baseWidth:Number = 170;
-			//var universalAlpha:Number = 0.4;
-			var gapDiff:Number = 30;
+
 			if (!barsDecorated) {
 				initializeSideBar();
 			}
@@ -105,10 +109,7 @@ package classes
 			mainView.sensBar.width = (player.sens * (baseWidth / 100));
 			mainView.corBar.width = (player.cor * (baseWidth / 100));
 
-			mainView.HPBar.width = ((player.HP / player.maxHP() * 100) * (baseWidth / 100));
-			mainView.lustBar.width = ((player.lust / player.maxLust() * 100) * (baseWidth / 100));
 			mainView.minLustBar.width = ((player.minLust() / player.maxLust() * 100) * (baseWidth / 100));
-			mainView.fatigueBar.width = ((player.fatigue / player.maxFatigue() * 100) * (baseWidth / 100));
 			
 			//Experience bar.
 			if (player.level < kGAMECLASS.levelCap) mainView.xpBar.width = (((player.XP / player.requiredXP()) * 100) * (baseWidth / 100));
@@ -122,9 +123,10 @@ package classes
 			mainView.libNum.text = String(Math.floor(player.lib));
 			mainView.senNum.text = String(Math.floor(player.sens));
 			mainView.corNum.text = String(Math.floor(player.cor));
-			mainView.HPNum.text = Math.floor(player.HP) + "/" + Math.floor(player.maxHP());
-			mainView.lustNum.text = Math.floor(player.lust) + "/" + player.maxLust();
-			mainView.fatigueNum.text = Math.floor(player.fatigue) + "/" + player.maxFatigue();
+			
+			animateBarChange(mainView.HPBar, mainView.HPNum, previousNums[0], player.HP, player.maxHP());
+			animateBarChange(mainView.lustBar, mainView.lustNum, previousNums[1], player.lust, player.maxLust());
+			animateBarChange(mainView.fatigueBar, mainView.fatigueNum, previousNums[2], player.fatigue, player.maxFatigue());
 			
 			//Display experience numbers.
 			mainView.levelNum.text = String(player.level);
@@ -139,20 +141,44 @@ package classes
 			//if (model.time.minutes < 10) minutesDisplay = "0" + model.time.minutes;
 			//else minutesDisplay = "" + model.time.minutes;
 			mainView.timeText.htmlText = "<u>Day#: " + model.time.days + "</u>\n";
-			//if (flags[kFLAGS.USE_12_HOURS] == 0) {
+			if (flags[kFLAGS.USE_12_HOURS] == 0) {
 				mainView.timeText.htmlText += "Time: " + model.time.hours + ":00";
-			/*}
+			}
 			else {
-				if (model.time.hours < 12) {
-					if (model.time.hours == 0) mainView.timeText.htmlText += "Time: " + (model.time.hours + 12) + ":" + minutesDisplay + "am";
-					else mainView.timeText.htmlText += "Time: " + model.time.hours + ":" + minutesDisplay + "am";
-				}
-				else {
-					if (model.time.hours == 12) mainView.timeText.htmlText += "Time: " + model.time.hours + ":" + minutesDisplay + "pm";
-					else mainView.timeText.htmlText += "Time: " + (model.time.hours - 12) + ":" + minutesDisplay + "pm";
-				}
-			}*/
-			//if (timeTextFormat != null) mainView.timeText.setTextFormat(timeTextFormat);
+				if (model.time.hours % 12 == 0) mainView.timeText.htmlText += "Time: " + (model.time.hours + 12) + ":00";
+				else mainView.timeText.htmlText += "Time: " + model.time.hours + ":00";
+				mainView.timeText.htmlText += model.time.hours < 12 ? "am" : "pm"
+			}
+			refreshBackground();
+		}
+		
+		//Refresh background
+		public function refreshBackground(overrideIdx:int = -2):void {
+			var chooser:int = overrideIdx >= -1 ? overrideIdx : flags[kFLAGS.TEXT_BACKGROUND_STYLE];
+			switch(chooser) {
+				case -1:
+					mainView.textBGTan.visible = false;
+					mainView.textBGWhite.visible = false;
+					break;
+				case 0:
+					mainView.textBGTan.visible = false;
+					mainView.textBGWhite.visible = true;
+					mainView.textBGWhite.alpha = 0.4;
+					break;
+				case 1:
+					mainView.textBGTan.visible = false;
+					mainView.textBGWhite.visible = true;
+					mainView.textBGWhite.alpha = 1;
+					break;
+				case 2:
+					mainView.textBGTan.visible = true;
+					mainView.textBGWhite.visible = false;
+					break;
+				default:
+					mainView.textBGTan.visible = false;
+					mainView.textBGWhite.visible = true;
+					mainView.textBGWhite.alpha = 0.4;
+			}
 		}
 		
 		//Show/hide stats bars.
@@ -190,6 +216,48 @@ package classes
 		private function moveButtonsIn(e:TimerEvent):void {
 			for (var i:int = 0; i < 15; i++) {
 				mainView.bottomButtons[i].y -= 5;
+			}
+		}
+		
+		//Animate bars!
+		public function animateBarChange(bar:MovieClip, barNum:TextField, oldValue:Number, newValue:Number, maxValue:Number):void {
+			if (kGAMECLASS.flags[kFLAGS.ANIMATE_STATS_BARS] == 0) {
+				bar.width = (newValue / maxValue) * baseWidth;
+				barNum.text = newValue + "/" + maxValue;
+				return;
+			}
+			var oldValue:Number = oldValue;
+			//Now animate the bar.
+			var tmr:Timer = new Timer(32, 30);
+			tmr.addEventListener(TimerEvent.TIMER, kGAMECLASS.createCallBackFunction2(stepBarChange, bar, barNum, [oldValue, newValue, maxValue, tmr]));
+			tmr.start();
+		}
+		private function stepBarChange(bar:MovieClip, barNum:TextField, args:Array):void {
+			var originalValue:Number = args[0]; 
+			var targetValue:Number = args[1]; 
+			var maxValue:Number = args[2];
+			var timer:Timer = args[3];
+			var stepIncrement:Number = (targetValue - originalValue) / timer.repeatCount;
+			bar.width = (baseWidth * (originalValue + (stepIncrement * timer.currentCount))) / maxValue;
+			barNum.text = Math.floor(originalValue + (stepIncrement * timer.currentCount)) + "/" + maxValue;
+			if (timer.currentCount >= timer.repeatCount) {
+				bar.width = (targetValue / maxValue) * baseWidth;
+				barNum.text = Math.floor(targetValue) + "/" + maxValue;
+				var idx:int = 0;
+				switch(bar.name) {
+					case "HPBar":
+						idx = 0;
+						break;
+					case "lustBar":
+						idx = 1;
+						break;
+					case "fatigueBar":
+						idx = 2;
+						break;
+					default:
+						idx = 0;
+				}
+				previousNums[idx] = targetValue;
 			}
 		}
 		

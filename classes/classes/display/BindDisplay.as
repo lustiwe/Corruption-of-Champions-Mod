@@ -37,12 +37,12 @@ package classes.display
 		private var _button2Text:String;
 		
 		// Values for the contained button sizing/offsets
-		private static const BUTTON_X_OFFSET :Number = 200;
-		private static const BUTTON_Y_OFFSET :Number = 668;
-		private static const BUTTON_X_DELTA :Number = 160;
+		public static const BUTTON_X_OFFSET :Number = 200;
+		public static const BUTTON_Y_OFFSET :Number = 668;
+		public static const BUTTON_X_DELTA :Number = 160;
 		public static const BUTTON_Y_DELTA :Number = 52;
-		private static const BUTTON_REAL_WIDTH :Number = 150;
-		private static const BUTTON_REAL_HEIGHT :Number = 40;
+		public static const BUTTON_REAL_WIDTH :Number = 150;
+		public static const BUTTON_REAL_HEIGHT :Number = 40;
 		
 		/**
 		 * Create a new composite object, initilizing the label to be used for display, as well as the two
@@ -50,14 +50,14 @@ package classes.display
 		 * 
 		 * @param	maxWidth	Defines the maximum available width that the control can consume for positining math
 		 */
-		public function BindDisplay(maxWidth:int) 
+		public function BindDisplay(maxWidth:int, maxHeight:int = 40, buttons:int = 2) 
 		{
 			_maxWidth = maxWidth;
 			
 			// TODO: This is also the kind of thing that would be handy to stuff into a global static class
 			// to init global formatting objects in a central location
 			InitFormatting();
-			InitButtons();
+			InitButtons(buttons);
 			InitLabel();
 		}
 		
@@ -71,6 +71,7 @@ package classes.display
 			_textFormatLabel = new TextFormat();
 			_textFormatLabel.font = _textFont.fontName; // Pulls in our embedded fonts from the swc to use dynamically!
 			_textFormatLabel.size = 18;
+			_textFormatLabel.leading = -2;
 			_textFormatLabel.align = TextFormatAlign.RIGHT;
 			
 			_textFormatButton = new TextFormat();
@@ -87,7 +88,7 @@ package classes.display
 		 * shared text formatting, would probably allow us to move to having a properly contained button class
 		 * without the need for seperate labels.
 		 */
-		private function InitButtons():void
+		private function InitButtons(buttonsNum:int = 2):void
 		{
 			_buttons = new Array();
 			_buttonBgs = new Array();
@@ -99,14 +100,20 @@ package classes.display
 			var xPos:int;
 			xPos = (_maxWidth - 15) - ( 2 * BUTTON_X_DELTA);
 			
-			for (var i:int = 0; i < 2; i++)
+			for (var i:int = 0; i < buttonsNum; i++)
 			{
 				b = new buttonBackground0();
 				b.name = "ctrlBtn" + String(i);
 				b.x = xPos;
-				xPos += BUTTON_X_DELTA;
 				b.y = 0;
-				b.width = BUTTON_REAL_WIDTH;
+				if (buttonsNum > 2) {
+					b.width = BUTTON_REAL_WIDTH * (2 / buttonsNum);
+					xPos += BUTTON_X_DELTA * (2 / buttonsNum);
+				}
+				else {
+					b.width = BUTTON_REAL_WIDTH;
+					xPos += BUTTON_X_DELTA;
+				}
 				b.height = BUTTON_REAL_HEIGHT;
 				
 				tf = new TextField();
@@ -195,6 +202,9 @@ package classes.display
 		{
 			_buttons[1].callback = callback;
 		}
+		
+		public function get buttons():Array { return _buttons; }
+		public function get label():TextField { return _nameLabel; }
 	}
 
 }

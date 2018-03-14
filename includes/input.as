@@ -20,26 +20,19 @@ public function changeHandler(event:Event):void {
 
 public function displayControls():void
 {
+	gameSettings.hideSettingPane();
 	mainView.hideAllMenuButtons();
 	inputManager.DisplayBindingPane();
-	
-	choices("Reset Ctrls", resetControls,
-			"Clear Ctrls", clearControls,
-			"Null", null,
-			"Null", null,
-			"Null", null,
-			"Null", null,
-			"Null", null,
-			"Null", null,
-			"Null", null,
-			"Back", hideControls);
+	menu();
+	addButton(0, "Reset Ctrls", resetControls);
+	addButton(1, "Clear Ctrls", clearControls);
+	addButton(4, "Back", hideControls);
 }
 
 public function hideControls():void
 {
 	inputManager.HideBindingPane();
-	
-	settingsScreen();
+	gameSettings.enterSettings();
 }
 
 public function resetControls():void

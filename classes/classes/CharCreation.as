@@ -32,6 +32,7 @@
 			mainView.eventTestInput.y = -1055.1;
 			hideStats();
 			hideUpDown();
+			getGame().mainMenu.hideMainMenu();
 			mainView.nameBox.visible = true;
 			mainView.nameBox.width = 165;
 			mainView.hideMenuButton( MainView.MENU_NEW_MAIN );

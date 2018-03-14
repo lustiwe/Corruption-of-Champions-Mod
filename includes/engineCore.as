@@ -2291,16 +2291,15 @@ public function cuntChangeOld(cIndex:Number, vIndex:Number, display:Boolean):voi
 }
 
 public function spriteSelect(choice:Number = 0):void {
-	if (flags[kFLAGS.SHOW_SPRITES_FLAG] == 0)
-	{
-		mainView.selectSprite(choice, flags[kFLAGS.SPRITE_STYLE]);
-	}
-	else
-	{
-		if (choice >= 0)
-		{
-			trace ("hiding sprite because flags");
-			mainView.selectSprite( -1 );
-		}
+	switch(flags[kFLAGS.SHOW_SPRITES_FLAG]) {
+		case 1:
+			mainView.selectSprite(choice, 1);
+			break;
+		case 2:
+			mainView.selectSprite(choice, 0);
+			break;
+		default:
+			trace("hiding sprite because flags");
+			mainView.selectSprite(-1);
 	}
 }

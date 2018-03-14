@@ -88,7 +88,7 @@
 //No longer needed:		include "../../includes/InitialiseUI.as";
 		include "../../includes/input.as";
 		include "../../includes/OnLoadVariables.as";
-		include "../../includes/startUp.as";
+//No longer needed:		include "../../includes/startUp.as";
 		include "../../includes/debug.as";
 		
 		include "../../includes/combat.as";
@@ -129,6 +129,8 @@
 		private var _perkLib:PerkLib = new PerkLib();// to init the static
 		private var _statusAffects:StatusAffects = new StatusAffects();// to init the static
 		public var charCreation:CharCreation = new CharCreation();
+		public var gameSettings:GameSettings = new GameSettings();
+		public var mainMenu:MainMenu = new MainMenu();
 		public var mainViewManager:MainViewManager = new MainViewManager();
 		public var saves:Saves = new Saves(gameStateDirectGet, gameStateDirectSet);
 		// Items/
@@ -298,9 +300,9 @@
 		
 		public function set inCombat(value:Boolean):void { gameState = (value ? 1 : 0); }
 		
-		private function gameStateDirectGet():int { return gameState; }
+		public function gameStateDirectGet():int { return gameState; }
 		
-		private function gameStateDirectSet(value:int):void { gameState = value; }
+		public function gameStateDirectSet(value:int):void { gameState = value; }
 		
 		public function rand(max:int):int
 		{
@@ -577,7 +579,8 @@
 
 		public function run():void
 		{
-			mainMenu();
+			mainMenu.mainMenu();
+			saves.loadPermObject();
 			this.stop();
 
 			_updateHack.name = "wtf";

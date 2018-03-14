@@ -1235,8 +1235,8 @@ package classes.Scenes.Dungeons.D3
 		}
 		
 		private function quitToMenu():void {
-			player.str = 0;
-			getGame().mainMenu();
+			player.str = 0; //Disables continue.
+			getGame().mainMenu.mainMenu();
 		}
 	}
 }
