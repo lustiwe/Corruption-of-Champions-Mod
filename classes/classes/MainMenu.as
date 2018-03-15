@@ -265,10 +265,14 @@ package classes
 		public function creditsScreen():void {
 			hideMainMenu();
 			clearOutput();
-			outputText("<b><u>Credits</u></b>");
+			outputText("<b><u>Credits</u></b>\n");
 			outputText("<b>Coding and Main Events:</b>\n");
 			outputText("<ul>");
 			outputText("<li> Fenoxo</li>\n");
+			outputText("</ul>");
+			outputText("<b>Vanilla+ Changes:</b>\n");
+			outputText("<ul>");
+			outputText("<li> Kitteh6660</li>");
 			outputText("</ul>");
 			outputText("<b>Typo Reporting</b>\n");
 			outputText("<ul>");
