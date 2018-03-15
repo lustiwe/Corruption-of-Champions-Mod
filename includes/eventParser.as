@@ -8,7 +8,8 @@ import classes.Scenes.Areas.Lake;
 //const PHYLLA_GEMS_HUNTED_TODAY:int = 893;
 
 public function playerMenu():void {
-	if (!inCombat) spriteSelect(-1);
+	if (!inCombat) spriteSelect( -1);
+	mainMenu.hideMainMenu();
 	mainView.setMenuButton(MainView.MENU_NEW_MAIN, "New Game", charCreation.newGameGo);
 	mainView.nameBox.visible = false;
 	if (gameState == 1 || gameState == 2) {
