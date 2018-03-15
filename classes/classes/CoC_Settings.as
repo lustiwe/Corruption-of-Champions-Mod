@@ -8,7 +8,7 @@
 	{
 
 
-		public static var debugBuild:Boolean = true;
+		public static var debugBuild:Boolean = CONFIG::debug;
 		
 		// Horrible static abuse FTW
 		public static var haltOnErrors:Boolean = false;

@@ -46,7 +46,7 @@ package classes
 						button.callback = null;
 					}
 				}
-				//updateMainMenuTextColours();
+				updateEventText();
 				showMainMenu();
 			}
 		}
@@ -118,6 +118,17 @@ package classes
 			miniCredit.htmlText += "<b>Edited by:</b> Ashi, SoS, Prisoner416, Zeikfried, et al";
 			miniCredit.htmlText += "<b>Open-source contributions by:</b> aimozg, Amygdala, Cmacleod42, Enterprise2001, Fake-Name, Gedan, Kitteh6660, Yoffy, et al";
 			mainMenuContent.push(miniCredit);
+			var eventInfo:TextField = new TextField();
+			eventInfo.name = "eventInfo";
+			eventInfo.multiline = true;
+			eventInfo.height = 80;
+			eventInfo.width = 700;
+			eventInfo.x = 0;
+			eventInfo.y = getGame().stage.stageHeight - 80;
+			eventInfo.selectable = false;
+			eventInfo.defaultTextFormat = new TextFormat("Palatino Linotype, serif", 16, 0, true, null, null, null, null, "left");
+			eventInfo.htmlText = "";
+			mainMenuContent.push(eventInfo);
 			var versionInfo:TextField = new TextField();
 			versionInfo.name = "versionInfo";
 			versionInfo.multiline = true;
@@ -164,6 +175,7 @@ package classes
 				mainView.addChild(mainMenuContent[i]);
 			}
 			mainMenuConfigured = true
+			updateEventText();
 		}
 		/*private function updateMainMenuTextColours():void {
 			var elements:Array = ["revampLogo", "miniCredit", "websiteInfo", "versionInfo"];
@@ -196,36 +208,41 @@ package classes
 			getGame().mainViewManager.refreshBackground();
 		}
 		
-		public function startupScreenBody():void {
+		public function updateEventText():void {
 			// NO FUCKING DECENT MULTI-LINE STRING LITERALS BECAUSE FUCKING STUPID
 			// WTF ACTIONSCRIPT YOUR DEV'S ARE ON CRACK
 			//Disclaimer
-			outputText("\n\n<b><u>DISCLAIMER</u></b>");
+			/*outputText("\n\n<b><u>DISCLAIMER</u></b>");
 			outputText("<li>There are many strange and odd fetishes contained in this flash.  Peruse at own risk.</li>");
 			outputText("<li>Please be 18 or the legal age to view porn before playing. If not, enable SFW Mode.</li>");
 			outputText("<li>Try to keep your keyboard clean.  Think of the children!</li>");
 			//Other Info
 			outputText("\n\nFor more information see Fenoxo's Blog at <b><u><a href='http://www.fenoxo.com/'>fenoxo.com</a></u></b>. ")
 			outputText("\n\nCheck out Trials in Tainted Space as well!");
-			outputText("\n\nAlso go play <u>Nimin</u> by Xadera on furaffinity.");
-
-			if (debug)
-				outputText("\n\n<b>DEBUG MODE ENABLED: ITEMS WILL NOT BE CONSUMED BY USE.</b>");
-			if (kGAMECLASS.flags[kFLAGS.SHOW_SPRITES_FLAG])
-				outputText("\n\n<b>Sprites enabled. You like to see pretty pictures.</b>");
-			if (kGAMECLASS.flags[kFLAGS.EASY_MODE_ENABLE_FLAG])
-				outputText("\n\n<b>Easy Mode On: Bad-ends can be ignored.</b>");
-			if (kGAMECLASS.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG])
-				outputText("\n\n<b>SILLY MODE ENGAGED: Crazy, nonsensical, and possibly hilarious things may occur.</b>");
-			if (kGAMECLASS.flags[kFLAGS.ITS_EVERY_DAY])
-				outputText("\n\n<b>Eternal holiday enabled.</b>");
-			if (kGAMECLASS.plains.bunnyGirl.isItEaster())
-				outputText("\n\n<b>It's Easter! Enjoy the eggs!</b>");
-			if (kGAMECLASS.isValentine())
-				outputText("\n\n<b>It's Valentine's!</b>");
-			if (kGAMECLASS.helFollower.isHeliaBirthday())
-				outputText("\n\n<b>It's Helia's Birthday Month!</b>");
-
+			outputText("\n\nAlso go play <u>Nimin</u> by Xadera on furaffinity.");*/
+			//if (kGAMECLASS.flags[kFLAGS.SHOW_SPRITES_FLAG]) (NOT NEEDED)
+			//	str += "\nSprites enabled. You like to see pretty pictures.";
+			//if (kGAMECLASS.flags[kFLAGS.EASY_MODE_ENABLE_FLAG] > 0)
+			//	str += "\nEasy Mode On: Bad-ends can be ignored.";
+			var eventField:TextField = mainView.getChildByName("eventInfo") as TextField
+			if (eventField != null) {
+				var str:String = "";
+				if (debug)
+					str += "DEBUG MODE ENABLED: ITEMS WILL NOT BE CONSUMED BY USE.\n";
+				if (silly())
+					str += "SILLY MODE ENGAGED: Crazy, nonsensical, and possibly hilarious things may occur.\n";
+				if (kGAMECLASS.flags[kFLAGS.ITS_EVERY_DAY] > 0)
+					str += "Eternal holiday enabled.\n";
+				if (kGAMECLASS.plains.bunnyGirl.isItEaster())
+					str += "It's Easter! Enjoy the eggs!\n";
+				if (kGAMECLASS.isValentine())
+					str += "It's Valentine's!\n";
+				if (kGAMECLASS.helFollower.isHeliaBirthday())
+					str += "It's Helia's Birthday Month!\n";
+				eventField.htmlText = str;
+				eventField.height = eventField.textHeight + 5;
+				eventField.y = getGame().stage.stageHeight - eventField.height;
+			}
 		}
 
 		//------------

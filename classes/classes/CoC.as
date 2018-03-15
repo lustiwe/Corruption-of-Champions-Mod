@@ -579,8 +579,8 @@
 
 		public function run():void
 		{
-			mainMenu.mainMenu();
 			saves.loadPermObject();
+			mainMenu.mainMenu();
 			this.stop();
 
 			_updateHack.name = "wtf";
