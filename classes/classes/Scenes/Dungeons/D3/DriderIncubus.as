@@ -4,6 +4,7 @@ package classes.Scenes.Dungeons.D3
 	import classes.StatusAffects;
 	import classes.PerkLib;
 	import classes.GlobalFlags.kGAMECLASS;
+	import classes.GlobalFlags.kFLAGS;
 	import classes.CockTypesEnum;
 	
 	public class DriderIncubus extends AbstractSpiderMorph
@@ -356,7 +357,7 @@ package classes.Scenes.Dungeons.D3
 					outputText(" You don’t feel the impact, but you do hear the crack of wood striking");
 					outputText(" bone");
 					outputText(".");
-					if(player.findPerk(PerkLib.Resolute) < 0)
+					if(player.findPerk(PerkLib.Resolute) < 0 || (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] < 0 && rand(2) == 0))
 					{
 						outputText(" <b>You’re left stunned by the blow!</b> It’ll be a moment before you can regain your wits.");
 						player.createStatusAffect(StatusAffects.Stunned,0,0,0,0);

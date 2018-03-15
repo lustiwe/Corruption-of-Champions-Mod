@@ -2,6 +2,7 @@ package classes.Scenes.Areas.Plains
 {
 	import classes.*;
 	import classes.internals.*;
+	import classes.GlobalFlags.kFLAGS;
 
 	/**
 	 * ...
@@ -128,7 +129,7 @@ package classes.Scenes.Areas.Plains
 			else if(player.armorDef > 10 && rand(2) == 0) {
 				outputText("The gnoll pulls a long, dark wooden javelin from over her shoulder.  Her spotted arm strikes forward, launching the missile through the air.  The spear flashes through the air but hits at an angle, sliding off your " + player.armorName + " without doing any damage.  It disappears into the grass.", false);
 			}
-			else if(player.findPerk(PerkLib.Resolute) >= 0 && player.tou >= 75) {
+			else if(player.findPerk(PerkLib.Resolute) >= 0 && (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] >= 0 || rand(2) == 0) && player.tou >= 75) {
 				outputText("You resolutely ignore the spear, brushing the blunted tip away when it hits you.\n");
 			}
 			//<Hyena Attack 2 – Javelin – Successful – Player Entangled>

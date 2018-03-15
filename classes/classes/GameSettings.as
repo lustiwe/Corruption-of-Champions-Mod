@@ -48,8 +48,8 @@ package classes
 			if (pane.name == PANES_CONFIG[0][0]) { //Gameplay
 				pane.addOrUpdateToggleSettings("Game Difficulty", [
 					["Easy", createCallBackFunction2(toggleSetting, kFLAGS.EASY_MODE_ENABLE_FLAG, 1), "Combat is easier and bad-ends can be ignored.", flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == 1],
-					["Normal", createCallBackFunction2(toggleSetting, kFLAGS.EASY_MODE_ENABLE_FLAG, 0), "Combat is unaltered and bad-ends can ruin your game.", flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == 0]//,
-					//["Hard", createCallBackFunction2(toggleSetting, kFLAGS.EASY_MODE_ENABLE_FLAG, -1), "Combat is challenging and bad-ends can ruin your game.", flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == -1]
+					["Normal", createCallBackFunction2(toggleSetting, kFLAGS.EASY_MODE_ENABLE_FLAG, 0), "Combat is unaltered and bad-ends can ruin your game.", flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == 0],
+					["Hard", createCallBackFunction2(toggleSetting, kFLAGS.EASY_MODE_ENABLE_FLAG, -1), "Combat is challenging and bad-ends can ruin your game.", flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == -1]
 				]);
 				pane.addOrUpdateToggleSettings("Debug Mode", [
 					["ON", createCallBackFunction2(toggleDebug, true), "Items will not be consumed by use, fleeing always succeeds, and bad-ends can be ignored.", debug == true],

@@ -1,6 +1,7 @@
 package classes.Scenes.Dungeons.HelDungeon
 {
 	import classes.*;
+	import classes.GlobalFlags.kFLAGS;
 
 	public class Brigid extends Monster
 	{
@@ -23,7 +24,7 @@ package classes.Scenes.Dungeons.HelDungeon
 			var damage:Number = 5;
 			damage = player.takeDamage(5);
 			outputText(" (" + damage + ")");
-			if(player.findPerk(PerkLib.Resolute) >= 0) outputText("  Of course, your resolute posture prevents her from accomplishing much.");
+			if(player.findPerk(PerkLib.Resolute) >= 0 && (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] >= 0 || rand(2) == 0)) outputText("  Of course, your resolute posture prevents her from accomplishing much.");
 			else player.createStatusAffect(StatusAffects.Stunned,0,0,0,0);
 			game.combatRoundOver();
 		}

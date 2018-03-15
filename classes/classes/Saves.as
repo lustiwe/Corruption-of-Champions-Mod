@@ -483,6 +483,7 @@ public function savePermObject(isFile:Boolean):void {
 				saveFile.data.flags[i] = 0;
 			}			
 		}
+		saveFile.data.flags[kFLAGS.EASY_MODE_ENABLE_FLAG] = flags[kFLAGS.EASY_MODE_ENABLE_FLAG];
 		saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] = flags[kFLAGS.SHOW_SPRITES_FLAG];
 		saveFile.data.flags[kFLAGS.SILLY_MODE_ENABLE_FLAG] = flags[kFLAGS.SILLY_MODE_ENABLE_FLAG];
 		
@@ -511,6 +512,7 @@ public function loadPermObject():void {
 	{
 		//Load saved flags.
 		if (saveFile.data.flags) {
+			if (saveFile.data.flags[kFLAGS.EASY_MODE_ENABLE_FLAG] != undefined) flags[kFLAGS.EASY_MODE_ENABLE_FLAG] = saveFile.data.flags[kFLAGS.EASY_MODE_ENABLE_FLAG];			
 			if (saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG] != undefined) 
 				flags[kFLAGS.SHOW_SPRITES_FLAG] = saveFile.data.flags[kFLAGS.SHOW_SPRITES_FLAG];
 			else

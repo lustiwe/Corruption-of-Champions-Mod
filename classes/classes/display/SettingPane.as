@@ -154,10 +154,13 @@ package classes.display
 		}
 		
 		private function colourifyText(text:String):String {
-			if (text.toLowerCase() == "on" || text.toLowerCase() == "enabled") {
+			if (text.toLowerCase() == "on" || text.toLowerCase() == "enabled" || text.toLowerCase() == "easy") {
 				text = "<font color=\"#008000\">" + text + "</font>";
 			}
-			else if (text.toLowerCase() == "off" || text.toLowerCase() == "disabled") {
+			if (text.toLowerCase() == "normal") {
+				text = "<font color=\"#808000\">" + text + "</font>";
+			}
+			else if (text.toLowerCase() == "off" || text.toLowerCase() == "disabled" || text.toLowerCase() == "hard") {
 				text = "<font color=\"#800000\">" + text + "</font>";
 			}
 			else if (text.toLowerCase() == "choose" || text.toLowerCase() == "enable") {

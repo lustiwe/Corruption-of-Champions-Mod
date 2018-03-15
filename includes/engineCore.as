@@ -1491,7 +1491,7 @@ public function physicalCost(mod:Number):Number {
 public function spellCost(mod:Number):Number {
 	//Addiditive mods
 	var costPercent:Number = 100;
-	if(player.findPerk(PerkLib.SpellcastingAffinity) >= 0) costPercent -= player.perkv1(PerkLib.SpellcastingAffinity);
+	if(player.findPerk(PerkLib.SpellcastingAffinity) >= 0) costPercent -= flags[kFLAGS.EASY_MODE_ENABLE_FLAG] >= 0 ? player.perkv1(PerkLib.SpellcastingAffinity) : player.perkv1(PerkLib.SpellcastingAffinity) / 2;
 	if(player.findPerk(PerkLib.WizardsEndurance) >= 0) costPercent -= player.perkv1(PerkLib.WizardsEndurance);
 	
 	//Limiting it and multiplicative mods
@@ -1916,8 +1916,16 @@ public function displayStats(e:MouseEvent = null):void
 public function lustPercent():Number {
 	var lust:Number = 100;
 	//2.5% lust resistance per level - max 75.
-	if(player.level < 21) lust -= (player.level - 1) * 3;
-	else lust = 40;
+	//Easy & Normal Difficulty
+	if (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] >= 0) {
+		lust -= (player.level - 1) * 3;
+		if (lust < 40) lust = 40;
+	}
+	//Hard Difficulty
+	else {
+		lust -= (player.level - 1) * 2;
+		if (lust < 60) lust = 60;
+	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++
 	//ADDITIVE REDUCTIONS

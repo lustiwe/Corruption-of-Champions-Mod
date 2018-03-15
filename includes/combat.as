@@ -1730,6 +1730,7 @@ public function regeneration(combat:Boolean = true):void {
 		if(player.armorName == "goo armor") healingPercent += 2;
 		if(player.findPerk(PerkLib.LustyRegeneration) >= 0) healingPercent += 1;
 		if(healingPercent > 5) healingPercent = 5;
+		if (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == -1) healingPercent /= 2; //Halved in Hard Mode
 		HPChange(Math.round(maxHP() * healingPercent / 100), false);
 	}
 	else {

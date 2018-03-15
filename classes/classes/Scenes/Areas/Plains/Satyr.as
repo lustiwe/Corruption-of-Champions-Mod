@@ -2,6 +2,7 @@ package classes.Scenes.Areas.Plains
 {
 	import classes.*;
 	import classes.internals.*;
+	import classes.GlobalFlags.kFLAGS;
 
 	public class Satyr extends Monster
 	{
@@ -61,7 +62,7 @@ package classes.Scenes.Areas.Plains
 				if(damage > 0) {
 					damage = player.takeDamage(damage);
 					outputText("He charges at you with a loud bleat, catching you off-guard and sending you flying into the ground.");
-					if(player.findPerk(PerkLib.Resolute) < 0) {
+					if (player.findPerk(PerkLib.Resolute) < 0 || (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] < 0 && rand(2) == 0)) {
 						outputText("  The pain of the impact is so big you feel completely dazed, almost seeing stars.");
 						player.createStatusAffect(StatusAffects.Stunned,0,0,0,0);
 					}

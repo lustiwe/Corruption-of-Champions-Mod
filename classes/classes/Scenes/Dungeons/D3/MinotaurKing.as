@@ -95,7 +95,7 @@ package classes.Scenes.Dungeons.D3
 				combatRoundOver();
 				return;
 			}
-			if(hpVictory)
+			if(hpVictory && this._milkDrinks < 8)
 			{
 				this.hpRestore();
 				combatRoundOver();
@@ -183,7 +183,7 @@ package classes.Scenes.Dungeons.D3
 				this._lastRoundStun = true;
 				damage = player.takeDamage(damage);
 				outputText(" He impacts with stunning force, leaving you reeling! (" + damage + ")");
-				if(player.findPerk(PerkLib.Resolute) < 0)
+				if (player.findPerk(PerkLib.Resolute) < 0 || (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] < 0 && rand(2) == 0))
 				{
 					outputText(" <b>You\'re left stunned by the force of the blow!</b>");
 					player.createStatusAffect(StatusAffects.Stunned,0,0,0,0);

@@ -279,9 +279,11 @@ use namespace kGAMECLASS;
 		}
 
 		public function reduceDamage(damage:Number):Number{
-			damage = int(damage - rand(tou) - armorDef);
+			var resist:Number = armorDef + game.flags[kFLAGS.EASY_MODE_ENABLE_FLAG] >= 0 ? rand(tou) : rand(tou / 2);
+			damage = int(damage - resist);
 			//EZ MOAD half damage
 			if (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == 1) damage /= 2;
+			if (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] == -1) damage *= 1.2;
 			if (findStatusAffect(StatusAffects.Shielding) >= 0) {
 				damage -= 30;
 				if (damage < 1) damage = 1;

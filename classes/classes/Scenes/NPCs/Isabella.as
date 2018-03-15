@@ -1,6 +1,7 @@
 package classes.Scenes.NPCs
 {
 	import classes.*;
+	import classes.GlobalFlags.kFLAGS;
 
 	public class Isabella extends Monster
 	{
@@ -77,7 +78,7 @@ package classes.Scenes.NPCs
 					outputText("You deflect her blow away, taking no damage.\n", false);
 					damage = 0;
 				}
-				else if(player.findPerk(PerkLib.Resolute) >= 0 && player.tou >= 75) {
+				else if(player.findPerk(PerkLib.Resolute) >= 0 && player.tou >= 75 && (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] >= 0 || rand(2) == 0)) {
 					outputText("You resolutely ignore the blow thanks to your immense toughness.\n");
 					damage = 0;
 				}
@@ -119,7 +120,7 @@ package classes.Scenes.NPCs
 				if(damage <= 0) {
 					outputText("You manage to block her with your own fists.\n", false);
 				}
-				else if(player.findPerk(PerkLib.Resolute) >= 0 && player.tou >= 75) {
+				else if(player.findPerk(PerkLib.Resolute) >= 0 && player.tou >= 75 && (flags[kFLAGS.EASY_MODE_ENABLE_FLAG] >= 0 || rand(2) == 0)) {
 					outputText("You resolutely ignore the blow thanks to your immense toughness.\n");
 				}
 				else {
