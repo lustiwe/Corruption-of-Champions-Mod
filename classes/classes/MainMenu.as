@@ -195,7 +195,7 @@ package classes
 			}
 			mainView.mainText.visible = false;
 			mainView.scrollBar.visible = false;
-			getGame().mainViewManager.refreshBackground(-1);
+			getGame().mainViewManager.refreshTheme(-1);
 		}
 		public function hideMainMenu():void {
 			if (mainMenuConfigured) {
@@ -205,7 +205,7 @@ package classes
 			}
 			mainView.mainText.visible = true;
 			mainView.scrollBar.visible = true;
-			getGame().mainViewManager.refreshBackground();
+			getGame().mainViewManager.refreshTheme();
 		}
 		
 		public function updateEventText():void {

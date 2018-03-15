@@ -38,9 +38,6 @@ package classes
 	{
 		//Interface flags
 		public var registeredShiftKey:Boolean = false;
-		//public var minLustBar:MovieClip = new MovieClip();
-		//public var minLustBarCreated:Boolean = false;
-		public var initializedThirdRow:Boolean = false;
 		public var initializedGradients:Boolean = false;
 		
 		public const textColorArray:Array = [null, null, null, 0xC0C0C0, 0xC0C0C0, null, null, null, null, null];
@@ -56,14 +53,15 @@ package classes
 		public var barsDecorated:Boolean = false;
 		
 		//Format		
-		private var oldFormat:TextFormat;
-		private var newFormat:TextFormat;
-		//private var oldFormatLarge:TextFormat;
-		//private var timeTextFormat:TextFormat;
+		private var oldFormatNum:TextFormat = new TextFormat("Lucida Sans Typewriter", 24);
+		private var newFormatNum:TextFormat = new TextFormat("Palatino Linotype", 24);
+		private var oldFormatLabel:TextFormat = new TextFormat("Lucida Sans Typewriter", 14);
+		private var newFormatLabel:TextFormat = new TextFormat("Palatino Linotype", 16);
 		
 		private var arraySet:Boolean = false;
 		public var colorableTexts:Array = [];
-		public var fontableTexts:Array = []; //Will be used for font adjustment.
+		public var fontableNumbers:Array = []; //Will be used for font adjustment.
+		public var fontableLabels:Array = [];
 		public var bars:Array = [];
 
 		private var universalAlpha:Number = 0.4;
@@ -81,14 +79,21 @@ package classes
 		//For now
 		private function initializeSideBar():void {
 			if (barsDecorated) return;
+			var i:int;
 			barsDecorated = true;
 			var barsToDecorate:Array = ["strBar", "touBar", "speBar", "inteBar", "libBar", "sensBar", "corBar", "HPBar", "lustBar", "fatigueBar", "xpBar"];
-			for (var i:int = 0; i < barsToDecorate.length; i++) {
+			var numbersToBeFontable:Array = [mainView.strNum, mainView.touNum, mainView.speNum, mainView.inteNum, mainView.libNum, mainView.senNum, mainView.corNum, mainView.HPNum, mainView.lustNum, mainView.fatigueNum, mainView.levelNum, mainView.xpNum, mainView.gemsNum];
+			var labelsToBeFontable:Array = [mainView.strText, mainView.touText, mainView.speText, mainView.inteText, mainView.libText, mainView.senText, mainView.corText, mainView.HPText, mainView.lustText, mainView.fatigueText, mainView.levelText, mainView.xpText, mainView.gemsText];
+			for (i = 0; i < barsToDecorate.length; i++) {
 				var marker:Sprite = new StatsBarTrim() as Sprite;
 				marker.name = barsToDecorate[i] + "Trim";
 				marker.x = mainView[barsToDecorate[i]].x - 2;
 				marker.y = mainView[barsToDecorate[i]].y + 18;
 				mainView.statsView.addChildAt(marker, mainView.statsView.numChildren);
+			}
+			for (i = 0; i < numbersToBeFontable.length; i++) {
+				fontableNumbers.push(numbersToBeFontable[i]);
+				fontableLabels.push(labelsToBeFontable[i]);
 			}
 		}
 		
@@ -137,23 +142,23 @@ package classes
 			mainView.nameText.htmlText = "<b>Name: " + player.short + "</b>";
 			
 			//Time display
-			//var minutesDisplay:String = "";
-			//if (model.time.minutes < 10) minutesDisplay = "0" + model.time.minutes;
-			//else minutesDisplay = "" + model.time.minutes;
+			refreshTimeDisplay();
+			refreshTheme();
+		}
+		
+		public function refreshTimeDisplay():void {
 			mainView.timeText.htmlText = "<u>Day#: " + model.time.days + "</u>\n";
-			if (flags[kFLAGS.USE_12_HOURS] == 0) {
-				mainView.timeText.htmlText += "Time: " + model.time.hours + ":00";
+			if (flags[kFLAGS.USE_12_HOURS] == true) {
+				if (model.time.hours % 12 == 0) mainView.timeText.htmlText += "Time: " + (model.time.hours + 12) + ":00" + (model.time.hours < 12 ? "am" : "pm");
+				else mainView.timeText.htmlText += "Time: " + (model.time.hours % 12) + ":00" + (model.time.hours < 12 ? "am" : "pm");
 			}
 			else {
-				if (model.time.hours % 12 == 0) mainView.timeText.htmlText += "Time: " + (model.time.hours + 12) + ":00";
-				else mainView.timeText.htmlText += "Time: " + model.time.hours + ":00";
-				mainView.timeText.htmlText += model.time.hours < 12 ? "am" : "pm"
+				mainView.timeText.htmlText += "Time: " + model.time.hours + ":00";
 			}
-			refreshBackground();
 		}
 		
 		//Refresh background
-		public function refreshBackground(overrideIdx:int = -2):void {
+		public function refreshTheme(overrideIdx:int = -2):void {
 			var chooser:int = overrideIdx >= -1 ? overrideIdx : flags[kFLAGS.TEXT_BACKGROUND_STYLE];
 			switch(chooser) {
 				case -1:
@@ -179,6 +184,13 @@ package classes
 					mainView.textBGWhite.visible = true;
 					mainView.textBGWhite.alpha = 0.4;
 			}
+			for (var i:int = 0; i < fontableNumbers.length; i++) {
+				var tn:TextField = fontableNumbers[i] as TextField;
+				var tl:TextField = fontableLabels[i] as TextField;
+				tn.setTextFormat(flags[kFLAGS.USE_OLD_FONT] == true ? oldFormatNum : newFormatNum);
+				tl.setTextFormat(flags[kFLAGS.USE_OLD_FONT] == true ? oldFormatLabel : newFormatLabel);
+			}
+			refreshTimeDisplay();
 		}
 		
 		//Show/hide stats bars.

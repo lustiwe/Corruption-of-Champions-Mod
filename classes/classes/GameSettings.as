@@ -157,7 +157,7 @@ package classes
 		}
 		private function chooseTextBackground(type:int):void {
 			flags[kFLAGS.TEXT_BACKGROUND_STYLE] = type;
-			getGame().mainViewManager.refreshBackground();
+			getGame().mainViewManager.refreshTheme();
 		}
 
 		//Needed for keys
@@ -166,7 +166,7 @@ package classes
 			if (flags[kFLAGS.TEXT_BACKGROUND_STYLE] > 2) {
 				flags[kFLAGS.TEXT_BACKGROUND_STYLE] = -1;
 			}
-			getGame().mainViewManager.refreshBackground();
+			getGame().mainViewManager.refreshTheme();
 		}
 		
 
