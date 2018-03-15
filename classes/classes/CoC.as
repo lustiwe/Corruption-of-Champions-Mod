@@ -371,7 +371,7 @@
 			//model.debug = debug; // TODO: Set on model?
 
 			//Version NUMBER
-			ver = "1.0.2_v+_03";
+			ver = "1.0.2_v+_04";
 			version = ver + " (<b>Vanilla Plus!</b>)";
 
 			//Indicates if building for mobile?
