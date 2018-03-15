@@ -24,7 +24,6 @@ package classes
 			menu();
 			//Sets game state to 3, used for determining back functionality of save/load menu.
 			getGame().gameStateDirectSet(3);
-			getGame().mainViewManager.refreshBackground(-1);
 			mainView.mainText.visible = false;
 			mainView.scrollBar.visible = false;
 			//mainView.creditsBox.visible = false;
@@ -184,7 +183,7 @@ package classes
 			}
 			mainView.mainText.visible = false;
 			mainView.scrollBar.visible = false;
-			getGame().mainViewManager.refreshBackground();
+			getGame().mainViewManager.refreshBackground(-1);
 		}
 		public function hideMainMenu():void {
 			if (mainMenuConfigured) {
