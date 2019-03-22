@@ -420,6 +420,7 @@ internal function winSparWithKiha():void {
 		outputText("[pg]You sigh and head back towards your stuff.");
 		kihaAffection(20);
 	}
+	flags[kFLAGS.KIHA_SPAR_VICTORIES]++;
 	combat.cleanupAfterCombat();
 }
 //Spar with Friendly Kiha - Kiha Wins (Z)
@@ -1990,6 +1991,7 @@ internal function pcWinsDomFight():void {
 	//outputText("[pg]Kiha nods, as best she can with her head pinned against the tree trunk, and then grins.  \"<i>Just the way I like it, [name]. Let's get back to camp; no doubt there are demons that need our feet up their asses.</i>\"  That sounds like a good idea.  (And maybe she can clean herself up when she gets back).");
 	outputText("[pg]Kiha nods, as best she can with her head pinned, and then she grins.  \"<i>Dominance isn't something you do once and get forever, [name].  If you want to stay on top with me, you'd better back it up with your actions.  It takes more than a few losses to make me ANYONE's bitch.</i>\"  Well, that's probably as good as you'll get out of her for now.  You suggest heading back to camp; no doubt there's some demons needing feet up their asses.  Kiha replies, \"<i>Sounds like a good idea, [master].</i>\"  There's an undercurrent of humor in her words, but she's the one who couldn't handle you in a fight.");
 	player.orgasm('Generic');
+	flags[kFLAGS.KIHA_SPAR_VICTORIES]++;
 	combat.cleanupAfterCombat();
 }
 
