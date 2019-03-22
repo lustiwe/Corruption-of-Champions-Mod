@@ -48,10 +48,10 @@ package classes
 			getGame().displayHeader("Achievements");
 			outputText("Note: Some achievements are contradictory and may require multiple playthroughs to obtain every achievement.\n");
 			titleAchievementSection("Storyline"); //4 achievements
-			addAchievement("Newcomer", kACHIEVEMENTS.STORY_NEWCOMER, "Enter the realm of Mareth.");
-			addAchievement("Marae's Savior", kACHIEVEMENTS.STORY_MARAE_SAVIOR, "Complete Marae's quest.");
-			addAchievement("Revenge at Last", kACHIEVEMENTS.STORY_ZETAZ_REVENGE, "Defeat Zetaz and obtain the map.");
-			addAchievement("Demon Slayer", kACHIEVEMENTS.STORY_FINALBOSS, "Defeat Lethice.");
+			addAchievement("Новичок", kACHIEVEMENTS.STORY_NEWCOMER, "Добро пожаловать.");
+			addAchievement("Спаситель Мары", kACHIEVEMENTS.STORY_MARAE_SAVIOR, "Завершите сюжетную линию Мары.");
+			addAchievement("Отмщение", kACHIEVEMENTS.STORY_ZETAZ_REVENGE, "Победите Зетаза и получите карту.");
+			addAchievement("Демоноубийца", kACHIEVEMENTS.STORY_FINALBOSS, "Победите Летис.");
 			
 			titleAchievementSection("Zones"); //17/20 achievements
 			addAchievement("Explorer", kACHIEVEMENTS.ZONE_EXPLORER, "Discover every zone.");
